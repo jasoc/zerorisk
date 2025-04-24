@@ -1,0 +1,47 @@
+@use 'tokens' as tokens;
+
+:host {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  .app-container {
+    height: inherit;
+    width: inherit;
+
+    mat-drawer {
+      width: 600px;
+    }
+  }
+
+  #router {
+    height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: tokens.$zerorisk-shell-margin auto tokens.$zerorisk-shell-margin;
+    grid-template-rows: 64px auto tokens.$zerorisk-shell-margin;
+
+    #navigation-bar {
+      grid-column: 1 / 4;
+      grid-row: 1;
+      height: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    #router__inner {
+      width: calc(100% - tokens.$zerorisk-shell-margin * 2);
+      height: calc(100% - tokens.$zerorisk-shell-margin * 2);
+      background: var(--zerorisk-background-shader-lighter);
+      border-radius: tokens.$zerorisk-shell-rounding;
+      grid-column: 1 / 3;
+      grid-row: 2;
+      overflow-x: hidden;
+      padding: tokens.$zerorisk-shell-margin;
+    }
+  }
+}

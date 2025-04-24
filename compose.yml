@@ -1,0 +1,19 @@
+services:
+  frontend:
+    container_name: zerorisk-zerorisk-dev
+    image: zerorisk/zerorisk:debug
+    entrypoint: /bin/sh ./run.sh
+    command: dev
+    working_dir: /zerorisk
+    build:
+      context: ./frontend
+      target: spa-base
+      network: host
+    env_file:
+      - path: .env
+        required: true
+    ports:
+      - 4200:4200
+      - 9222:9222
+    volumes:
+      - ./frontend:/zerorisk

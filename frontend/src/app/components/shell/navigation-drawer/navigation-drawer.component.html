@@ -1,0 +1,98 @@
+<div id="navigation-drawer" [@openClose]="collapsed ? 'closed' : 'open'">
+  <div class="navigation-drawer__top" [ngStyle]="{}">
+    <button
+      mat-icon-button
+      matTooltip="Basic"
+      (click)="ToggleCollapse()"
+      aria-label="Example icon-button with a heart icon"
+    >
+      <mat-icon fontSet="material-symbols-outlined">{{ collapsed ? 'menu' : 'chevron_left' }}</mat-icon>
+    </button>
+    @if (!this.collapsed) {
+      <p @showUserButton>zerorisk</p>
+    }
+  </div>
+
+  <div class="entries">
+    <m3-button
+      [Icon]="isLightTheme ? 'toggle_off' : 'toggle_on'"
+      Type="sidenav-left"
+      [Text]="collapsed ? '' : 'Dark Theme'"
+      [Ripple]="true"
+      BackgroundColor="transparent"
+      (click)="onThemeSwitchChange()"
+    >
+    </m3-button>
+
+    <!-- 1st level -->
+    <ng-container *ngFor="let element of navigationElementsTree">
+      <div
+        class="navigation-entry"
+        [ngClass]="{
+          'navigation-entry-wide': this.collapsed,
+          'navigation-entry-expanded': element.isExpanded,
+        }"
+      >
+        <m3-button
+          *ngIf="element.type == 'button'"
+          [icon-filled]="element.rippled"
+          [Icon]="element.icon"
+          [Rippled]="element.rippled"
+          Type="sidenav-left"
+          [Text]="collapsed ? '' : element.name"
+          (click)="navigate(element)"
+        >
+        </m3-button>
+
+        <div [@separatorDisappear]="this.collapsed" *ngIf="element.type == 'tag'" class="navigation-separator"></div>
+
+        <mat-chip *ngIf="!this.collapsed && element.type == 'tag'" color="primary">
+          {{ element.name }}
+        </mat-chip>
+        <!-- 2nd level -->
+        <ng-container *ngIf="element.isExpanded">
+          <div class="navigation-entry-subelements">
+            <div class="navigation-entry-subelements-left">
+              <div class="navigation-entry-subelements-left-spacer"></div>
+            </div>
+            <div class="navigation-entry-subelements-right">
+              <ng-container *ngFor="let element_1 of element.subElements">
+                <mat-chip *ngIf="element_1.type == 'tag'" color="primary">
+                  {{ element_1.name }}
+                </mat-chip>
+                <m3-button
+                  *ngIf="element_1.type == 'button'"
+                  Type="thin"
+                  [Icon]="element_1.icon"
+                  [icon-filled]="element_1.rippled"
+                  [Text]="collapsed ? '' : element_1.name"
+                  [Rippled]="element_1.rippled"
+                  (click)="navigate(element_1, element)"
+                >
+                </m3-button>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+
+  <div style="margin: auto 0px"></div>
+
+  <div class="show-user">
+    @if (collapsed) {
+      <button mat-mini-fab color="accent">
+        <mat-icon class="material-symbols-rounded">settings</mat-icon>
+      </button>
+    } @else {
+      <button mat-fab color="accent">
+        <mat-icon class="material-symbols-rounded">settings</mat-icon>
+      </button>
+    }
+    <button mat-fab extended *ngIf="!collapsed" @showUserButton color="primary">
+      <mat-icon class="material-symbols-rounded">home</mat-icon>
+      Home page
+    </button>
+  </div>
+</div>
